@@ -8,6 +8,7 @@ from cv2 import findContours, RETR_CCOMP, CHAIN_APPROX_SIMPLE, contourArea
 from io import BytesIO
 from json import dumps as json_dumps
 from datetime import datetime
+from os.path import join as os_join
 
 wp.init()
 @wp.kernel
@@ -35,7 +36,6 @@ class COCOWriter(Writer):
                 licenses: dict = None,
                 use_license: int = 0
             ):
-        
         self.use_license = use_license
         if info is None:
             info = {
@@ -171,7 +171,8 @@ class COCOWriter(Writer):
             segmentations = None
             coco = self.coco
             if "rgb" + name in data:
-                filepath = f"{name[1:]}/rgb/frame_{frame_id_str}.{self._image_output_format}"
+
+                filepath = os_join(f"{name[1:]}", "rgb", f"frame_{frame_id_str}.{self._image_output_format}")
                 rgb_shape = data["rgb" + name].shape
                 coco["images"] = [{"id": self._frame_id,
                                    "license": self.use_license, 
@@ -187,8 +188,6 @@ class COCOWriter(Writer):
                     labels, coco["categories"] = self.get_bbox_labels_categories(data["bounding_box_2d_tight" + name])
 
             if "instance_segmentation" + name in data:
-                filepath = f"{name[1:]}/instance_segmentation/frame_{frame_id_str}.{self._image_output_format}"
-
                 labels, coco["categories"] = self.get_labels_and_categories(data["instance_segmentation" + name]["info"])
                 
                 mask = data["instance_segmentation" + name]["data"]
@@ -208,7 +207,7 @@ class COCOWriter(Writer):
                 annotations.append(annotation)
 
             coco["annotations"] = annotations
-            coco_path = f"{name[1:]}/coco_{frame_id_str}.json"
+            coco_path = os_join(f"{name[1:]}", f"coco_{frame_id_str}.json")
             buf = BytesIO()
             buf.write(json_dumps(coco).encode())
             self._backend.write_blob(coco_path, buf.getvalue())
