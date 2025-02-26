@@ -48,7 +48,7 @@ class COCOWriter(Writer):
             }
 
         if licenses is None:
-            info = [
+            licenses = [
                 {
                     "url": "https://creativecommons.org/licenses/by/4.0/",
                     "id": 0,

@@ -94,6 +94,10 @@ After running the writer, the following files will be generated:
 - `<out_dir>/coco_*.json`: COCO format file
 - `<out_dir>/rgb/frame_*.png`: RGB images
 
+## Example Output
+
+![COCO Writer Output Example](./img/img.png)
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
