@@ -163,8 +163,8 @@ class COCOWriter(Writer):
         for key in data.keys():
             if key.startswith("rp_"):
                 names.append(key.replace("rp_", "-"))
-        if len(names) == 0:
-            names.append("")
+        if len(names) <= 1:
+            names = [""]
         for name in names:
             bbox_data = {}
             labels = annotations = []
