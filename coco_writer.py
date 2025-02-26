@@ -35,6 +35,7 @@ class COCOWriter(Writer):
                 licenses: dict = None,
                 use_license: int = 0
             ):
+        
         self.use_license = use_license
         if info is None:
             info = {
