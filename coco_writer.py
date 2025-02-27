@@ -198,6 +198,8 @@ class COCOWriter(Writer):
             for id, label in enumerate(labels):
                 annotation = {}
                 if segmentations is not None:
+                    if label[2] not in segmentations:
+                        continue
                     annotation = segmentations[label[2]]
                 if label[2] in bbox_data:
                     annotation["bbox"] = bbox_data[label[2]]
